@@ -5,10 +5,10 @@ const AuthContext = createContext(null)
 // Mock directory of demo accounts.
 const DEMO_USERS = {
   "admin@insure.com": { id: "a1", name: "Meera Iyer", email: "admin@insure.com", role: "admin" },
-  "aarav.sharma@example.com": {
+  "shashank@gmail.com": {
     id: "c1",
-    name: "Aarav Sharma",
-    email: "aarav.sharma@example.com",
+    name: "Shashank C",
+    email: "shashank@gmail.com",
     role: "customer",
   },
 }
@@ -23,8 +23,8 @@ export function AuthProvider({ children }) {
         ? existing
         : {
             id: role === "admin" ? "a1" : "c1",
-            name: role === "admin" ? "Meera Iyer" : "Aarav Sharma",
-            email: email || (role === "admin" ? "admin@insure.com" : "aarav.sharma@example.com"),
+            name: role === "admin" ? "Meera Iyer" : "Shashank C",
+            email: email || (role === "admin" ? "admin@insure.com" : "shashank@gmail.com"),
             role,
           }
     setUser(session)
