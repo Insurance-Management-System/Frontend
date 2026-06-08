@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState, useCallback } from "react"
+import { createContext, useContext, useState } from "react"
 import * as seed from "./seed-data.js"
 
 const DataContext = createContext(null)
@@ -17,24 +17,26 @@ export function DataProvider({ children }) {
   const [payments, setPayments] = useState(seed.payments)
   const [notifications, setNotifications] = useState(seed.notifications)
 
-  const getCustomer = useCallback((id) => customers.find((c) => c.id === id), [customers])
-  const getPolicy = useCallback((id) => policies.find((p) => p.id === id), [policies])
+  function getCustomer(id) {
+    return customers.find((c) => c.id === id)
+  }
 
+  function getPolicy(id) {
+    return policies.find((p) => p.id === id)
+  }
 
-  const savePolicy = useCallback((policy) => {
+  function savePolicy(policy) {
     setPolicies((prev) => {
       const exists = prev.some((p) => p.id === policy.id)
       return exists ? prev.map((p) => (p.id === policy.id ? policy : p)) : [...prev, policy]
     })
-  }, [])
+  }
 
- 
-  const setClaimStatus = useCallback((id, status) => {
+  function setClaimStatus(id, status) {
     setClaims((prev) => prev.map((c) => (c.id === id ? { ...c, status } : c)))
-  }, [])
+  }
 
- 
-  const buyPolicy = useCallback((policy, customerId) => {
+  function buyPolicy(policy, customerId) {
     const today = new Date().toISOString().slice(0, 10)
     const years = policy.duration.includes("20") ? 20 : 1
     const purchase = {
@@ -56,62 +58,41 @@ export function DataProvider({ children }) {
     setPurchasedPolicies((prev) => [...prev, purchase])
     setPayments((prev) => [payment, ...prev])
     return purchase
-  }, [])
+  }
 
-
-  const createClaim = useCallback((claim) => {
+  function createClaim(claim) {
     setClaims((prev) => [claim, ...prev])
-  }, [])
+  }
 
- 
-  const payPremium = useCallback((paymentId) => {
+  function payPremium(paymentId) {
     const today = new Date().toISOString().slice(0, 10)
     setPayments((prev) =>
       prev.map((p) => (p.id === paymentId ? { ...p, status: "Paid", date: today } : p)),
     )
-  }, [])
+  }
 
-
-  const addNotification = useCallback((note) => {
+  function addNotification(note) {
     setNotifications((prev) => [note, ...prev])
-  }, [])
+  }
 
-  const value = useMemo(
-    () => ({
-      customers,
-      policies,
-      purchasedPolicies,
-      claims,
-      payments,
-      notifications,
-      revenueByMonth: seed.revenueByMonth,
-      policyDistribution: seed.policyDistribution,
-      getCustomer,
-      getPolicy,
-      savePolicy,
-      setClaimStatus,
-      buyPolicy,
-      createClaim,
-      payPremium,
-      addNotification,
-    }),
-    [
-      customers,
-      policies,
-      purchasedPolicies,
-      claims,
-      payments,
-      notifications,
-      getCustomer,
-      getPolicy,
-      savePolicy,
-      setClaimStatus,
-      buyPolicy,
-      createClaim,
-      payPremium,
-      addNotification,
-    ],
-  )
+  const value = {
+    customers,
+    policies,
+    purchasedPolicies,
+    claims,
+    payments,
+    notifications,
+    policyDistribution: seed.policyDistribution,
+    revenueByMonth: seed.revenueByMonth,
+    getCustomer,
+    getPolicy,
+    savePolicy,
+    setClaimStatus,
+    buyPolicy,
+    createClaim,
+    payPremium,
+    addNotification,
+  }
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

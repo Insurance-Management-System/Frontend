@@ -1,3 +1,5 @@
+// Centralized mock seed data for the insurance management app (plain JS).
+
 export const customers = [
   {
     id: "c1",
@@ -5,7 +7,7 @@ export const customers = [
     email: "shashank@gmail.com",
     phone: "+91 98765 43210",
     aadhaar: "XXXX-XXXX-1234",
-    address: "12 MG Road, Pune",
+    address: "12 MG Road, Bengaluru, Karnataka",
     joinedDate: "2023-04-12",
   },
   {
@@ -19,8 +21,8 @@ export const customers = [
   },
   {
     id: "c3",
-    name: "Sidhhant O",
-    email: "sidhhant@gmail.com",
+    name: "Siddhant Oza",
+    email: "siddhant@gmail.com",
     phone: "+91 99887 76655",
     aadhaar: "XXXX-XXXX-9012",
     address: "7 Park Street, Kolkata, West Bengal",
@@ -37,7 +39,7 @@ export const customers = [
   },
   {
     id: "c5",
-    name: "vrushabh",
+    name: "Vrushabh T",
     email: "vrushabh@gmail.com",
     phone: "+91 98989 12121",
     aadhaar: "XXXX-XXXX-7890",
@@ -187,7 +189,7 @@ export const notifications = [
   {
     id: "n1",
     title: "Claim Approved",
-    message: "Your claim CLM-1001 for ₹45,000 has been approved and will be credited within 3 working days.",
+    message: "Your claim CLM-1001 for Rs. 45,000 has been approved and will be credited within 3 working days.",
     date: "2024-09-20",
     type: "claim",
     target: "customers",
@@ -195,7 +197,7 @@ export const notifications = [
   {
     id: "n2",
     title: "Premium Due",
-    message: "Your SecureHealth Plus premium of ₹12,000 is due on 12 Apr 2025. Pay now to avoid lapse.",
+    message: "Your SecureHealth Plus premium of Rs. 12,000 is due on 12 Apr 2025. Pay now to avoid lapse.",
     date: "2025-03-28",
     type: "payment",
     target: "customers",
@@ -211,7 +213,7 @@ export const notifications = [
   {
     id: "n4",
     title: "Payment Successful",
-    message: "Payment of ₹18,000 for LifeShield Term received successfully.",
+    message: "Payment of Rs. 18,000 for LifeShield Term received successfully.",
     date: "2024-06-22",
     type: "payment",
     target: "customers",
@@ -239,9 +241,5 @@ export const policyDistribution = [
 ]
 
 export function formatINR(value) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(value || 0)
+  return `Rs. ${Number(value || 0).toLocaleString("en-IN")}`
 }
