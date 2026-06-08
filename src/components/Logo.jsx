@@ -13,7 +13,7 @@ export function Logo({ showText = true, light = false }) {
       </div>
       {showText && (
         <span className={`fw-bold ${light ? "text-white" : "text-dark"}`} style={{ fontSize: "1.1rem" }}>
-          Aegis<span className={light ? "text-white-50" : "text-primary"}>Insure</span>
+          <span className={light ? "text-white-50" : "text-primary"}>Insure</span>
         </span>
       )}
     </div>
