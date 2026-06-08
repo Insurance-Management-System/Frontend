@@ -17,7 +17,9 @@ export default function BrowsePolicies() {
   const [success, setSuccess] = useState(null)
   const navigate = useNavigate()
 
-  const owned = new Set(purchasedPolicies.filter((p) => p.customerId === user.id && p.status === "Active").map((p) => p.policyId), )
+  const owned = new Set(
+    purchasedPolicies.filter((p) => p.customerId === user.id && p.status === "Active").map((p) => p.policyId),
+  )
   const list = policies.filter((p) => (filter === "All" ? true : p.type === filter))
 
   function confirmPurchase() {
@@ -45,21 +47,25 @@ export default function BrowsePolicies() {
           const isOwned = owned.has(policy.id)
           return (
             <div key={policy.id} className="col-12 col-md-6 col-xl-4">
-              <div className="ag-card h-100 p-4 d-flex flex-column">
+              <div className="card border-0 shadow-sm h-100 p-4 d-flex flex-column">
                 <div className="d-flex align-items-start justify-content-between mb-3">
-                  <div className="ag-stat-icon ag-soft-icon"><Icon size={22} /></div>
-                  <span className="ag-badge ag-badge-type">{policy.type}</span>
+                  <div className="rounded bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center"><Icon size={22} /></div>
+                  <span className="badge text-bg-light border text-primary">{policy.type}</span>
                 </div>
                 <h2 className="h6 fw-semibold mb-1">{policy.name}</h2>
-                <p className="text-muted-2 small mb-3" style={{ minHeight: 40 }}>{policy.description}</p>
+                <p className="text-muted small mb-3" style={{ minHeight: 40 }}>{policy.description}</p>
                 <div className="d-flex align-items-baseline gap-1 mb-3">
-                  <span className="fs-4 fw-semibold"> { formatINR(policy.premium) } </span>
-                  <span className="text-muted-2 small">/ {policy.duration}</span>
+                  <span className="fs-4 fw-semibold">{formatINR(policy.premium)}</span>
+                  <span className="text-muted small">/ {policy.duration}</span>
                 </div>
-                <p className="text-muted-2 small mb-3">Coverage up to <span className="fw-medium text-body"> { formatINR(policy.coverage) } </span></p>
+                <p className="text-muted small mb-3">Coverage up to <span className="fw-medium text-body">{formatINR(policy.coverage)}</span></p>
                 <div className="d-flex gap-2 mt-auto">
                   <button className="btn btn-outline-primary btn-sm flex-grow-1" onClick={() => setDetail(policy)}>Details</button>
-                  <button className="btn btn-primary btn-sm flex-grow-1" disabled={isOwned} onClick={() => setConfirming(policy)}>
+                  <button
+                    className="btn btn-primary btn-sm flex-grow-1"
+                    disabled={isOwned}
+                    onClick={() => setConfirming(policy)}
+                  >
                     {isOwned ? "Owned" : "Buy Now"}
                   </button>
                 </div>
@@ -69,18 +75,19 @@ export default function BrowsePolicies() {
         })}
       </div>
 
+      {/* Details modal */}
       {detail && (
         <Modal title={detail.name} onClose={() => setDetail(null)}>
-          <span className="ag-badge ag-badge-type mb-3 d-inline-block">{detail.type}</span>
-          <p className="text-muted-2 small">{detail.description}</p>
+          <span className="badge text-bg-light border text-primary mb-3 d-inline-block">{detail.type}</span>
+          <p className="text-muted small">{detail.description}</p>
           <div className="row g-3 my-2">
             <div className="col-6 border rounded-3 p-3">
-              <p className="text-muted-2 mb-0" style={{ fontSize: "0.72rem" }}>Coverage</p>
+              <p className="text-muted mb-0" style={{ fontSize: "0.72rem" }}>Coverage</p>
               <p className="fw-semibold mb-0">{formatINR(detail.coverage)}</p>
             </div>
             <div className="col-6 border rounded-3 p-3">
-              <p className="text-muted-2 mb-0" style={ { fontSize: "0.72rem" } }>Premium</p>
-              <p className="fw-semibold mb-0"> { formatINR(detail.premium) } / { detail.duration }</p>
+              <p className="text-muted mb-0" style={{ fontSize: "0.72rem" }}>Premium</p>
+              <p className="fw-semibold mb-0">{formatINR(detail.premium)} / {detail.duration}</p>
             </div>
           </div>
           <p className="fw-medium small mt-3 mb-2">Key Benefits</p>
@@ -95,8 +102,8 @@ export default function BrowsePolicies() {
           <div className="d-grid mt-4">
             <button
               className="btn btn-primary"
-              disabled={ owned.has(detail.id) }
-              onClick={ () => setConfirming(detail) }
+              disabled={owned.has(detail.id)}
+              onClick={() => setConfirming(detail)}
             >
               {owned.has(detail.id) ? "Already Owned" : `Buy for ${formatINR(detail.premium)}`}
             </button>
@@ -104,16 +111,17 @@ export default function BrowsePolicies() {
         </Modal>
       )}
 
+      {/* Purchase confirmation */}
       {confirming && (
         <Modal title="Confirm Purchase" onClose={() => setConfirming(null)}>
-          <p className="small text-muted-2">You are about to purchase the following plan:</p>
+          <p className="small text-muted">You are about to purchase the following plan:</p>
           <div className="border rounded-3 p-3 mb-3">
             <p className="fw-medium mb-1">{confirming.name}</p>
-            <div className="d-flex justify-content-between small text-muted-2">
+            <div className="d-flex justify-content-between small text-muted">
               <span>Premium ({confirming.duration})</span>
               <span className="fw-semibold text-body">{formatINR(confirming.premium)}</span>
             </div>
-            <div className="d-flex justify-content-between small text-muted-2">
+            <div className="d-flex justify-content-between small text-muted">
               <span>Coverage</span>
               <span className="fw-semibold text-body">{formatINR(confirming.coverage)}</span>
             </div>
@@ -125,12 +133,13 @@ export default function BrowsePolicies() {
         </Modal>
       )}
 
+      {/* Success */}
       {success && (
         <Modal title="" onClose={() => setSuccess(null)}>
           <div className="text-center py-3">
             <CheckCircle2 size={56} className="text-success mb-3" />
             <h4 className="fw-semibold">Policy Purchased!</h4>
-            <p className="text-muted-2 small mb-4">
+            <p className="text-muted small mb-4">
               {success.name} is now active. A payment of {formatINR(success.premium)} was recorded.
             </p>
             <div className="d-flex gap-2">

@@ -4,7 +4,7 @@ import { PageHeader } from "../../components/PageHeader.jsx"
 import { StatusBadge } from "../../components/StatusBadge.jsx"
 import { useAuth } from "../../lib/auth-context.jsx"
 import { useData, formatINR } from "../../lib/data-context.jsx"
-//Comment
+
 const typeIcons = { Health: HeartPulse, Life: Heart, Vehicle: Car, Travel: Plane }
 
 export default function MyPolicies() {
@@ -14,53 +14,57 @@ export default function MyPolicies() {
 
   return (
     <div>
-      <PageHeader title="My Policies" description="All your active and past insurance plans."
-        action={<Link to="/customer/policies" className="btn btn-primary">Browse More</Link>}/>
+      <PageHeader
+        title="My Policies"
+        description="All your active and past insurance plans."
+        action={
+          <Link to="/customer/policies" className="btn btn-primary">Browse More</Link>
+        }
+      />
 
       {mine.length === 0 ? (
-        <div className="ag-card p-5 text-center">
-          <ShieldCheck size={40} className="text-muted-2 mb-3" />
+        <div className="card border-0 shadow-sm p-5 text-center">
+          <ShieldCheck size={40} className="text-muted mb-3" />
           <p className="fw-medium mb-1">No policies yet</p>
-          <p className="text-muted-2 small mb-3">Browse our plans to get protected today.</p>
+          <p className="text-muted small mb-3">Browse our plans to get protected today.</p>
           <Link to="/customer/policies" className="btn btn-primary">Browse Policies</Link>
         </div>
-      ) : (<div className="row g-3">
-            {
-            mine.map((p) => {
-                const plan = getPolicy(p.policyId)
-                const Icon = typeIcons[plan?.type] || ShieldCheck
-                return (
-                <div key={p.id} className="col-12 col-md-6">
-                    <div className="ag-card h-100 p-4">
-                    <div className="d-flex align-items-start justify-content-between mb-3">
-                        <div className="d-flex align-items-center gap-3">
-                        <div className="ag-stat-icon ag-soft-icon"><Icon size={22} /></div>
-                        <div>
-                            <p className="fw-semibold mb-0"> { plan?.name } </p>
-                            <p className="text-muted-2 small mb-0"> { plan?.type } Insurance</p>
-                        </div>
-                        </div>
-                        <StatusBadge status={p.status} />
+      ) : (
+        <div className="row g-3">
+          {mine.map((p) => {
+            const plan = getPolicy(p.policyId)
+            const Icon = typeIcons[plan?.type] || ShieldCheck
+            return (
+              <div key={p.id} className="col-12 col-md-6">
+                <div className="card border-0 shadow-sm h-100 p-4">
+                  <div className="d-flex align-items-start justify-content-between mb-3">
+                    <div className="d-flex align-items-center gap-3">
+                      <div className="rounded bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center"><Icon size={22} /></div>
+                      <div>
+                        <p className="fw-semibold mb-0">{plan?.name}</p>
+                        <p className="text-muted small mb-0">{plan?.type} Insurance</p>
+                      </div>
                     </div>
-                    <div className="row g-3 small">
-                        <div className="col-6">
-                        <p className="text-muted-2 mb-0" style={ { fontSize: "0.72rem" } }>Coverage</p>
-                        <p className="fw-medium mb-0">{formatINR(plan?.coverage)}</p>
-                        </div>
-                        <div className="col-6">
-                        <p className="text-muted-2 mb-0" style={ { fontSize: "0.72rem" } }>Premium</p>
-                        <p className="fw-medium mb-0">{ formatINR(plan?.premium) }</p>
-                        </div>
+                    <StatusBadge status={p.status} />
+                  </div>
+                  <div className="row g-3 small">
+                    <div className="col-6">
+                      <p className="text-muted mb-0" style={{ fontSize: "0.72rem" }}>Coverage</p>
+                      <p className="fw-medium mb-0">{formatINR(plan?.coverage)}</p>
                     </div>
-                    <div className="d-flex align-items-center gap-2 text-muted-2 small mt-3 pt-3 border-top">
-                        <CalendarRange size={16} />
-                        <span>{p.startDate} → {p.endDate}</span>
+                    <div className="col-6">
+                      <p className="text-muted mb-0" style={{ fontSize: "0.72rem" }}>Premium</p>
+                      <p className="fw-medium mb-0">{formatINR(plan?.premium)}</p>
                     </div>
-                    </div>
+                  </div>
+                  <div className="d-flex align-items-center gap-2 text-muted small mt-3 pt-3 border-top">
+                    <CalendarRange size={16} />
+                    <span>{p.startDate} to {p.endDate}</span>
+                  </div>
                 </div>
-                )
-            })
-            }
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

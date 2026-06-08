@@ -5,20 +5,19 @@ import { PageHeader } from "../../components/PageHeader.jsx"
 import { useData } from "../../lib/data-context.jsx"
 
 const typeMeta = {
-    claim: { icon: FileText, accent: "ag-soft-icon" },
-    payment: { icon: CreditCard, accent: "ag-soft-icon" },
-    policy: { icon: ShieldCheck, accent: "ag-soft-icon" },
-    general: { icon: Bell, accent: "ag-soft-icon" },
-  }
+  claim: { icon: FileText },
+  payment: { icon: CreditCard },
+  policy: { icon: ShieldCheck },
+  general: { icon: Bell },
+}
 
-  export default function AdminNotifications() {
-    const { notifications, addNotification } = useData()
-    const [title, setTitle] = useState("")
-    const [message, setMessage] = useState("")
-    const [type, setType] = useState("general")
-    const [sent, setSent] = useState(false)
+export default function AdminNotifications() {
+  const { notifications, addNotification } = useData()
+  const [title, setTitle] = useState("")
+  const [message, setMessage] = useState("")
+  const [type, setType] = useState("general")
+  const [sent, setSent] = useState(false)
 
-    
   function submit(e) {
     e.preventDefault()
     addNotification({
@@ -29,7 +28,6 @@ const typeMeta = {
       target: "customers",
       date: new Date().toISOString().slice(0, 10),
     })
-
     setTitle("")
     setMessage("")
     setType("general")
@@ -43,10 +41,10 @@ const typeMeta = {
 
       <div className="row g-3">
         <div className="col-12 col-lg-5">
-          <div className="ag-card p-4">
+          <div className="card border-0 shadow-sm p-4">
             <h2 className="h6 fw-semibold mb-3">Send Notification</h2>
             {sent && (
-              <div className="ag-success-banner p-2 px-3 small mb-3">Notification sent to all customers.</div>
+              <div className="alert alert-success p-2 px-3 small mb-3">Notification sent to all customers.</div>
             )}
             <form onSubmit={submit} className="d-flex flex-column gap-3">
               <div>
@@ -74,7 +72,7 @@ const typeMeta = {
         </div>
 
         <div className="col-12 col-lg-7">
-          <div className="ag-card p-4">
+          <div className="card border-0 shadow-sm p-4">
             <h2 className="h6 fw-semibold mb-3">Sent History</h2>
             <div className="d-flex flex-column gap-2">
               {notifications.map((n) => {
@@ -82,15 +80,15 @@ const typeMeta = {
                 const Icon = meta.icon
                 return (
                   <div key={n.id} className="d-flex gap-3 border rounded-3 p-3">
-                    <div className="ag-stat-icon ag-soft-icon flex-shrink-0" style={{ width: 40, height: 40 }}>
+                    <div className="rounded bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 40, height: 40 }}>
                       <Icon size={18} />
                     </div>
                     <div className="flex-grow-1">
                       <div className="d-flex justify-content-between">
                         <p className="fw-medium mb-0 small">{n.title}</p>
-                        <span className="text-muted-2" style={{ fontSize: "0.72rem" }}>{n.date}</span>
+                        <span className="text-muted" style={{ fontSize: "0.72rem" }}>{n.date}</span>
                       </div>
-                      <p className="text-muted-2 mb-0" style={{ fontSize: "0.8rem" }}>{n.message}</p>
+                      <p className="text-muted mb-0" style={{ fontSize: "0.8rem" }}>{n.message}</p>
                     </div>
                   </div>
                 )

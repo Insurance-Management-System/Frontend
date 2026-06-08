@@ -1,57 +1,102 @@
 import { Link } from "react-router-dom"
-import {Users, ShieldCheck, IndianRupee, FileWarning} from "lucide-react"
+import { FileWarning, IndianRupee, ShieldCheck, Users } from "lucide-react"
 import { PageHeader } from "../../components/PageHeader.jsx"
 import { StatCard } from "../../components/StatCard.jsx"
 import { StatusBadge } from "../../components/StatusBadge.jsx"
-import { RevenueChart, PolicyDistributionChart } from "../../components/Charts.jsx"
 import { useData, formatINR } from "../../lib/data-context.jsx"
 
-export default function AdminDashboard(){
-    const { customers, policies, claims, payments, getCustomer } = useData()
+export default function AdminDashboard() {
+  const { customers, policies, claims, payments, policyDistribution, getCustomer } = useData()
 
-    const revenue = payments.filter((p)=>p.status === "paid").reduce((s,p)=> s + p.amount, 0)
-    const openClaims = claims.filter((c)=> c.status === "pending").length
-    const recentClaims = [...claims].sort((a,b) => b.date.localeCompare(a.date)).slice(0,5)
+  const revenue = payments.filter((p) => p.status === "Paid").reduce((sum, payment) => sum + payment.amount, 0)
+  const openClaims = claims.filter((claim) => claim.status === "Pending").length
+  const recentClaims = [...claims].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5)
+  const recentPayments = [...payments].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4)
 
-    return (
-        <div>
-        <PageHeader title="Dashboard" description="Overview of your insurance operations"/>
-        <div className="row g-3 mb-4">
+  return (
+    <div>
+      <PageHeader title="Admin Dashboard" description="Quick view of the insurance system." />
+
+      <div className="row g-3 mb-4">
         <div className="col-6 col-lg-3">
-          <StatCard label="Total Customers" value={customers.length} icon={Users} trend="+12% this month" accent="primary" />
+          <StatCard label="Customers" value={customers.length} icon={Users} />
         </div>
         <div className="col-6 col-lg-3">
-          <StatCard label="Total Policies" value={policies.length} icon={ShieldCheck} trend="4 plan types" accent="blue" />
+          <StatCard label="Plans" value={policies.length} icon={ShieldCheck} accent="blue" />
         </div>
         <div className="col-6 col-lg-3">
-          <StatCard label="Revenue" value={formatINR(revenue)} icon={IndianRupee} trend="+8.2% vs last month" accent="teal" />
+          <StatCard label="Revenue" value={formatINR(revenue)} icon={IndianRupee} accent="green" />
         </div>
         <div className="col-6 col-lg-3">
-          <StatCard label="Open Claims" value={openClaims} icon={FileWarning} trend="Awaiting review" accent="amber" />
+          <StatCard label="Pending Claims" value={openClaims} icon={FileWarning} accent="amber" />
         </div>
       </div>
 
       <div className="row g-3 mb-4">
-        <div className="col-12 col-lg-8">
-          <RevenueChart />
+        <div className="col-12 col-lg-5">
+          <div className="card border-0 shadow-sm p-4 h-100">
+            <h2 className="h6 fw-semibold mb-3">Policy Types</h2>
+            <div className="d-flex flex-column gap-3">
+              {policyDistribution.map((item) => (
+                <div key={item.name}>
+                  <div className="d-flex justify-content-between small mb-1">
+                    <span>{item.name}</span>
+                    <span className="fw-semibold">{item.value}%</span>
+                  </div>
+                  <div className="progress" style={{ height: 8 }}>
+                    <div className="progress-bar" style={{ width: `${item.value}%`, backgroundColor: item.fill }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="col-12 col-lg-4">
-          <PolicyDistributionChart />
+
+        <div className="col-12 col-lg-7">
+          <div className="card border-0 shadow-sm p-4 h-100">
+            <h2 className="h6 fw-semibold mb-3">Recent Payments</h2>
+            <div className="table-responsive">
+              <table className="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Payment</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentPayments.map((payment) => (
+                    <tr key={payment.id}>
+                      <td className="fw-medium">{payment.id}</td>
+                      <td>{formatINR(payment.amount)}</td>
+                      <td className="text-muted">{payment.date}</td>
+                      <td>
+                        <StatusBadge status={payment.status} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="ag-card">
-        <div className="ag-card-header d-flex align-items-center justify-content-between p-4 pb-3">
+
+      <div className="card border-0 shadow-sm">
+        <div className="d-flex align-items-center justify-content-between p-4 pb-3">
           <h2 className="h6 fw-semibold mb-0">Recent Claims</h2>
-          <Link to="/admin/claims" className="btn btn-sm btn-link text-primary text-decoration-none">View all</Link>
+          <Link to="/admin/claims" className="btn btn-sm btn-link text-primary text-decoration-none">
+            View all
+          </Link>
         </div>
         <div className="p-4 pt-0 table-responsive">
-          <table className="table ag-table align-middle">
+          <table className="table table-hover align-middle mb-0">
             <thead>
               <tr>
                 <th>Claim ID</th>
                 <th>Customer</th>
                 <th>Amount</th>
-                <th className="d-none d-md-table-cell">Reason</th>
                 <th>Status</th>
                 <th className="d-none d-sm-table-cell">Date</th>
               </tr>
@@ -62,15 +107,16 @@ export default function AdminDashboard(){
                   <td className="fw-medium">{claim.id}</td>
                   <td>{getCustomer(claim.customerId)?.name}</td>
                   <td>{formatINR(claim.amount)}</td>
-                  <td className="d-none d-md-table-cell text-muted-2 text-truncate" style={{ maxWidth: 240 }}>{claim.reason}</td>
-                  <td><StatusBadge status={claim.status} /></td>
-                  <td className="d-none d-sm-table-cell text-muted-2">{claim.date}</td>
+                  <td>
+                    <StatusBadge status={claim.status} />
+                  </td>
+                  <td className="d-none d-sm-table-cell text-muted">{claim.date}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-        </div>
-    )
+    </div>
+  )
 }

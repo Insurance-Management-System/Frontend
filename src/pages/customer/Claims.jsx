@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { Plus, FileText, Paperclip } from "lucide-react"
 import { PageHeader } from "../../components/PageHeader.jsx"
 import { StatusBadge } from "../../components/StatusBadge.jsx"
@@ -15,13 +15,9 @@ export default function CustomerClaims() {
 
   const myPolicies = purchasedPolicies.filter((p) => p.customerId === user.id)
   const mine = claims.filter((c) => c.customerId === user.id)
-  const visible = useMemo(
-    () =>
-      [...mine]
-        .filter((c) => (filter === "All" ? true : c.status === filter))
-        .sort((a, b) => b.date.localeCompare(a.date)),
-    [mine, filter],
-  )
+  const visible = [...mine]
+    .filter((c) => filter === "All" || c.status === filter)
+    .sort((a, b) => b.date.localeCompare(a.date))
 
   function submit(e) {
     e.preventDefault()
@@ -66,8 +62,8 @@ export default function CustomerClaims() {
         })}
       </div>
 
-      <div className="ag-card p-4 table-responsive">
-        <table className="table ag-table align-middle">
+      <div className="card border-0 shadow-sm p-4 table-responsive">
+        <table className="table table-hover align-middle">
           <thead>
             <tr>
               <th>Claim ID</th>
@@ -82,18 +78,18 @@ export default function CustomerClaims() {
             {visible.map((c) => (
               <tr key={c.id}>
                 <td className="fw-medium">{c.id}</td>
-                <td className="d-none d-md-table-cell text-muted-2">{getPolicy(c.policyId)?.name}</td>
+                <td className="d-none d-md-table-cell text-muted">{getPolicy(c.policyId)?.name}</td>
                 <td>{formatINR(c.amount)}</td>
-                <td className="d-none d-sm-table-cell text-muted-2 text-truncate" style={{ maxWidth: "16rem" }}>
+                <td className="d-none d-sm-table-cell text-muted text-truncate" style={{ maxWidth: "16rem" }}>
                   {c.reason}
                 </td>
-                <td className="d-none d-lg-table-cell text-muted-2">{c.date}</td>
+                <td className="d-none d-lg-table-cell text-muted">{c.date}</td>
                 <td><StatusBadge status={c.status} /></td>
               </tr>
             ))}
             {visible.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center text-muted-2 py-4">No claims here yet.</td>
+                <td colSpan={6} className="text-center text-muted py-4">No claims here yet.</td>
               </tr>
             )}
           </tbody>
@@ -115,8 +111,8 @@ export default function CustomerClaims() {
                   <div className="modal-body d-flex flex-column gap-3">
                     {myPolicies.length === 0 ? (
                       <div className="d-flex flex-column align-items-center text-center py-3">
-                        <Paperclip size={32} className="text-muted-2 mb-2" />
-                        <p className="text-muted-2 small mb-0">
+                        <Paperclip size={32} className="text-muted mb-2" />
+                        <p className="text-muted small mb-0">
                           You need an active policy before filing a claim.
                         </p>
                       </div>
@@ -131,12 +127,12 @@ export default function CustomerClaims() {
                           </select>
                         </div>
                         <div>
-                          <label htmlFor="amount" className="form-label small fw-medium">Claim Amount (₹)</label>
+                          <label htmlFor="amount" className="form-label small fw-medium">Claim Amount (Rs.)</label>
                           <input id="amount" name="amount" type="number" className="form-control" placeholder="25000" required />
                         </div>
                         <div>
                           <label htmlFor="reason" className="form-label small fw-medium">Reason</label>
-                          <textarea id="reason" name="reason" rows={3} className="form-control" placeholder="Describe your claim…" required />
+                          <textarea id="reason" name="reason" rows={3} className="form-control" placeholder="Describe your claim..." required />
                         </div>
                       </>
                     )}
