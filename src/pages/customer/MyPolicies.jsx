@@ -4,7 +4,7 @@ import { PageHeader } from "../../components/PageHeader.jsx"
 import { StatusBadge } from "../../components/StatusBadge.jsx"
 import { useAuth } from "../../lib/auth-context.jsx"
 import { useData, formatINR } from "../../lib/data-context.jsx"
-
+//Comment
 const typeIcons = { Health: HeartPulse, Life: Heart, Vehicle: Car, Travel: Plane }
 
 export default function MyPolicies() {
