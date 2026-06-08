@@ -21,7 +21,7 @@ export default function LoginPage(){
 
     function selectRole(next){
         setRole(next)
-        setEmail (next==="admin" ? "admin@gmail.com" : "vrushabh@example.com")
+        setEmail (next==="admin" ? "admin@gmail.com" : "vrushabh@gmail.com")
     }
 
     return(
