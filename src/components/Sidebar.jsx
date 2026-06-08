@@ -18,10 +18,11 @@ export function Sidebar(){
                 </NavLink>
                 </div>
                 <nav className ="d-flex flex-column gap-1 p-3 flex-grow-1">
-                    <p className="px-2 pt-2 pb-1 text-uppercase text-muted-2 fw-semibold" style={{ fontSize: "0.7rem", letterSpacing: "0.05em" }}>\
+                    <p className="px-2 pt-2 pb-1 text-uppercase text-muted-2 fw-semibold" style={{ fontSize: "0.7rem", letterSpacing: "0.05em" }}>
                      {user.role === "admin"? "Administration" : "My Account"}
                     </p>
                     {items.map((item)=>{
+                        const Icon=item.icon
                         return (
                             <NavLink key={item.href} to={item.href} end={item.href === roleHome} className="ag-nav-link">
                                 <Icon size={18}/>
