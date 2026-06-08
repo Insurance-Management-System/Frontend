@@ -1,38 +1,53 @@
-import { useEffect } from "react"
-import { Outlet, useNavigate } from "react-router-dom"
-import { Sidebar } from "./Sidebar.jsx"
-import { Navbar } from "./Navbar.jsx"
+import { NavLink, Navigate, Outlet } from "react-router-dom"
+import { LogOut } from "lucide-react"
+import { Logo } from "./Logo.jsx"
 import { useAuth } from "../lib/auth-context.jsx"
+import { navForRole } from "../lib/nav-config.js"
 
 export function AppShell({ role }) {
-  const { user } = useAuth()
-  const navigate = useNavigate()
+  const { user, logout } = useAuth()
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/", { replace: true })
-    } else if (user.role !== role) {
-      navigate(user.role === "admin" ? "/admin" : "/customer", { replace: true })
-    }
-  }, [user, role, navigate])
+  if (!user) return <Navigate to="/" replace />
+  if (user.role !== role) return <Navigate to={user.role === "admin" ? "/admin" : "/customer"} replace />
 
-  if (!user || user.role !== role) {
-    return (
-      <div className="d-flex min-vh-100 align-items-center justify-content-center">
-        <p className="text-muted-2 small mb-0">Redirecting…</p>
-      </div>
-    )
-  }
+  const home = user.role === "admin" ? "/admin" : "/customer"
 
   return (
-    <div className="ag-app">
-      <Sidebar />
-      <div className="ag-main">
-        <Navbar />
-        <main className="ag-content flex-grow-1">
-          <Outlet />
-        </main>
-      </div>
+    <div className="min-vh-100 bg-light">
+      <header className="bg-white border-bottom sticky-top">
+        <div className="container py-3">
+          <div className="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <NavLink to={home} className="text-decoration-none text-dark">
+              <Logo />
+            </NavLink>
+            <div className="d-flex align-items-center gap-2">
+              <span className="small text-muted d-none d-sm-inline">
+                {user.name} ({user.role})
+              </span>
+              <button className="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1" onClick={logout}>
+                <LogOut size={15} /> Logout
+              </button>
+            </div>
+          </div>
+
+          <nav className="nav nav-pills flex-nowrap overflow-auto">
+            {navForRole(user.role).map((item) => (
+              <NavLink
+                key={item.href}
+                to={item.href}
+                end={item.href === home}
+                className={({ isActive }) => `nav-link text-nowrap ${isActive ? "active" : "text-dark"}`}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      <main className="container py-4">
+        <Outlet />
+      </main>
     </div>
   )
 }
