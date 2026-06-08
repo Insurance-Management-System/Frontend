@@ -9,8 +9,8 @@ export default function LoginPage(){
     const {login} = useAuth()
     const navigate = useNavigate()
     const [role, setRole] = useState("admin")
-    const [email, setEmail] = useState("admin@insure.com")
-    const [password, setPassword] = useState("demo1234")
+    const [email, setEmail] = useState("admin@gmail.com")
+    const [password, setPassword] = useState("admin")
 
     function handleSubmit(e){
         e.preventDefault()
@@ -21,7 +21,7 @@ export default function LoginPage(){
 
     function selectRole(next){
         setRole(next)
-        setEmail (next==="admin" ? "admin@insure.com" : "aarav.sharma@example.com")
+        setEmail (next==="admin" ? "admin@gmail.com" : "vrushabh@example.com")
     }
 
     return(

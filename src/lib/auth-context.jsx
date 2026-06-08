@@ -2,13 +2,13 @@ import { createContext, useContext, useState, useCallback } from "react"
 
 const AuthContext = createContext(null)
 
-// Mock directory of demo accounts.
+
 const DEMO_USERS = {
-  "admin@insure.com": { id: "a1", name: "Meera Iyer", email: "admin@insure.com", role: "admin" },
-  "shashank@gmail.com": {
+  "admin@gmail.com": { id: "a1", name: "admin", email: "admin@gmail.com", role: "admin" },
+  "vrushabh@gmail.com": {
     id: "c1",
-    name: "Shashank C",
-    email: "shashank@gmail.com",
+    name: "vrushabh",
+    email: "vrushabh@gmail.com",
     role: "customer",
   },
 }
@@ -23,8 +23,8 @@ export function AuthProvider({ children }) {
         ? existing
         : {
             id: role === "admin" ? "a1" : "c1",
-            name: role === "admin" ? "Meera Iyer" : "Shashank C",
-            email: email || (role === "admin" ? "admin@insure.com" : "shashank@gmail.com"),
+            name: role === "admin" ? "admin" : "vrushabh",
+            email: email || (role === "admin" ? "admin@gmail.com" : "vrushabh@gmail.com"),
             role,
           }
     setUser(session)
