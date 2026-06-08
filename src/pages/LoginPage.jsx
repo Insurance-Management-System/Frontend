@@ -97,14 +97,6 @@ export default function LoginPage() {
                 Sign in <ArrowRight size={16} />
               </button>
             </form>
-
-            <div className="small text-muted mt-3">
-              Admin: {demoEmails.admin}
-              <br />
-              Customer: {demoEmails.customer}
-              <br />
-              Any password works.
-            </div>
           </section>
         </div>
       </div>
