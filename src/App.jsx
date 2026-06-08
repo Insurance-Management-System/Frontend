@@ -8,7 +8,7 @@ import AdminPolicies from "./pages/admin/Policies.jsx"
 import AdminClaims from "./pages/admin/Claims.jsx"
 import AdminPayments from "./pages/admin/Payments.jsx"
 import AdminNotifications from "./pages/admin/Notifications.jsx"
-import AdminSettings from "./pages/admin/Profile.jsx"
+import AdminSettings from "./pages/admin/Settings.jsx"
 
 import CustomerDashboard from "./pages/customer/Dashboard.jsx"
 import BrowsePolicies from "./pages/customer/BrowsePolicies.jsx"
@@ -18,11 +18,9 @@ import CustomerPayments from "./pages/customer/Payments.jsx"
 import CustomerNotifications from "./pages/customer/Notifications.jsx"
 import CustomerProfile from "./pages/customer/Profile.jsx"
 
-function App() {
-  
-
+export default function App() {
   return (
-<Routes>
+    <Routes>
       <Route path="/" element={<LoginPage />} />
 
       <Route element={<AppShell role="admin" />}>
@@ -49,5 +47,3 @@ function App() {
     </Routes>
   )
 }
-
-export default App
