@@ -1,5 +1,3 @@
-// Centralized mock seed data for the insurance management app (plain JS).
-
 export const customers = [
   {
     id: "c1",

@@ -2,9 +2,9 @@ import { createContext, useContext, useState } from "react"
 
 const AuthContext = createContext(null)
 
-// Mock directory of demo accounts.
+
 const DEMO_USERS = {
-  "admin@insure.com": { id: "a1", name: "SunLight Admin", email: "admin@insure.com", role: "admin" },
+  "admin@insure.com": { id: "a1", name: "Admin", email: "admin@insure.com", role: "admin" },
   "vrushabh@gmail.com": {
     id: "c1",
     name: "Vrushabh T",

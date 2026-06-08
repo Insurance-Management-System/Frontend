@@ -17,7 +17,7 @@ export const adminNav = [
   { label: "Claims", href: "/admin/claims", icon: FileText },
   { label: "Payments", href: "/admin/payments", icon: CreditCard },
   { label: "Notifications", href: "/admin/notifications", icon: Bell },
-  { label: "Settings", href: "/admin/settings", icon: Settings },
+  { label: "Profile", href: "/admin/settings", icon: UserCircle },
 ]
 
 export const customerNav = [

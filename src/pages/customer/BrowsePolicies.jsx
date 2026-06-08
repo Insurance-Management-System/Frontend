@@ -75,7 +75,7 @@ export default function BrowsePolicies() {
         })}
       </div>
 
-      {/* Details modal */}
+      
       {detail && (
         <Modal title={detail.name} onClose={() => setDetail(null)}>
           <span className="badge text-bg-light border text-primary mb-3 d-inline-block">{detail.type}</span>
@@ -111,7 +111,7 @@ export default function BrowsePolicies() {
         </Modal>
       )}
 
-      {/* Purchase confirmation */}
+     
       {confirming && (
         <Modal title="Confirm Purchase" onClose={() => setConfirming(null)}>
           <p className="small text-muted">You are about to purchase the following plan:</p>
@@ -133,7 +133,7 @@ export default function BrowsePolicies() {
         </Modal>
       )}
 
-      {/* Success */}
+      
       {success && (
         <Modal title="" onClose={() => setSuccess(null)}>
           <div className="text-center py-3">

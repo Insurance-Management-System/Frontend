@@ -1,4 +1,4 @@
-/* ── Brand colour overrides ── */
+
 :root {
   --bs-primary: #1e3a5f;
   --bs-primary-rgb: 30, 58, 95;
@@ -14,7 +14,7 @@ a {
   text-decoration: none;
 }
 
-/* Buttons */
+
 .btn-primary {
   background-color: #1e3a5f !important;
   border-color: #1e3a5f !important;
@@ -38,7 +38,7 @@ a {
   border-color: #dc3545;
 }
 
-/* Nav pills */
+
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: #1e3a5f !important;
@@ -49,7 +49,7 @@ a {
   color: #fff !important;
 }
 
-/* Sidebar (if used) */
+
 .bg-primary {
   background-color: #1e3a5f !important;
 }
@@ -60,7 +60,7 @@ a {
   border-color: #1e3a5f !important;
 }
 
-/* Pending payment card colours */
+
 .pending-due-card {
   border-left: 4px solid #1e3a5f;
   background: #fff;

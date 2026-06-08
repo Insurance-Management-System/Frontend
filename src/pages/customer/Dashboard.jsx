@@ -35,7 +35,6 @@ export default function CustomerDashboard() {
       </div>
 
       <div className="row g-3">
-        {/* My Policies */}
         <div className="col-12 col-lg-7">
           <div className="card border-0 shadow-sm">
             <div className="d-flex align-items-center justify-content-between p-4 pb-3">
@@ -62,7 +61,7 @@ export default function CustomerDashboard() {
           </div>
         </div>
 
-        {/* Pending Premium Payments */}
+        
         <div className="col-12 col-lg-5">
           <div className="card border-0 shadow-sm h-100">
             <div className="p-4 pb-3 d-flex align-items-center gap-2">
