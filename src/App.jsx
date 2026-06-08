@@ -1,4 +1,22 @@
+import { Routes, Route, Navigate } from "react-router-dom"
+import { AppShell } from "./components/AppShell.jsx"
+import LoginPage from "./pages/LoginPage.jsx"
 
+import AdminDashboard from "./pages/admin/Dashboard.jsx"
+import AdminCustomers from "./pages/admin/Customers.jsx"
+import AdminPolicies from "./pages/admin/Policies.jsx"
+import AdminClaims from "./pages/admin/Claims.jsx"
+import AdminPayments from "./pages/admin/Payments.jsx"
+import AdminNotifications from "./pages/admin/Notifications.jsx"
+import AdminSettings from "./pages/admin/Profile.jsx"
+
+import CustomerDashboard from "./pages/customer/Dashboard.jsx"
+import BrowsePolicies from "./pages/customer/BrowsePolicies.jsx"
+import MyPolicies from "./pages/customer/MyPolicies.jsx"
+import CustomerClaims from "./pages/customer/Claims.jsx"
+import CustomerPayments from "./pages/customer/Payments.jsx"
+import CustomerNotifications from "./pages/customer/Notifications.jsx"
+import CustomerProfile from "./pages/customer/Profile.jsx"
 
 function App() {
   
