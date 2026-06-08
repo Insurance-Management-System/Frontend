@@ -1,83 +1,105 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { User, KeyRound, LogOut } from "lucide-react"
 import { PageHeader } from "../../components/PageHeader.jsx"
 import { Avatar } from "../../components/Avatar.jsx"
 import { useAuth } from "../../lib/auth-context.jsx"
+import { useData } from "../../lib/data-context.jsx"
 
-export default function AdminSettings() {
-  const { user } = useAuth()
-  const [saved, setSaved] = useState(false)
+export default function CustomerProfile() {
+  const { user, logout } = useAuth()
+  const { getCustomer } = useData()
+  const navigate = useNavigate()
+  const [savedProfile, setSavedProfile] = useState(false)
+  const [savedPassword, setSavedPassword] = useState(false)
 
-  function save(e) {
+  const customer = getCustomer(user.id)
+
+  function saveProfile(e) {
     e.preventDefault()
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
+    setSavedProfile(true)
+    setTimeout(() => setSavedProfile(false), 2500)
+  }
+
+  function savePassword(e) {
+    e.preventDefault()
+    setSavedPassword(true)
+    setTimeout(() => setSavedPassword(false), 2500)
+  }
+
+  function handleLogout() {
+    logout()
+    navigate("/", { replace: true })
   }
 
   return (
     <div>
-      <PageHeader title="Settings" description="Manage your admin account and platform preferences." />
+      <PageHeader title="My Profile" description="Manage your account details and security." />
 
       <div className="row g-3">
-        <div className="col-12 col-lg-7">
+        <div className="col-12 col-lg-8">
           <div className="card border-0 shadow-sm p-4">
-            <h2 className="h6 fw-semibold mb-3">Profile</h2>
+            <h2 className="h6 fw-semibold d-flex align-items-center gap-2 mb-3">
+              <User size={18} className="text-primary" /> Profile
+            </h2>
             <div className="d-flex align-items-center gap-3 mb-4">
               <Avatar name={user.name} size={56} primary />
               <div>
                 <p className="fw-medium mb-0">{user.name}</p>
-                <p className="text-muted small mb-0">Administrator</p>
+                <p className="text-muted small mb-0 text-capitalize">{user.role}</p>
               </div>
             </div>
-            {saved && <div className="alert alert-success p-2 px-3 small mb-3">Settings saved successfully.</div>}
-            <form onSubmit={save} className="row g-3">
+            {savedProfile && <div className="alert alert-success p-2 px-3 small mb-3">Profile updated successfully.</div>}
+            <form onSubmit={saveProfile} className="row g-3">
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Full Name</label>
                 <input className="form-control" defaultValue={user.name} />
               </div>
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Email</label>
-                <input className="form-control" defaultValue={user.email} type="email" />
+                <input className="form-control" type="email" defaultValue={user.email} />
               </div>
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Phone</label>
-                <input className="form-control" defaultValue="+91 98000 11122" />
+                <input className="form-control" defaultValue={customer?.phone ?? "+91 90000 00000"} />
               </div>
               <div className="col-md-6">
-                <label className="form-label small fw-medium">Role</label>
-                <input className="form-control" defaultValue="Administrator" disabled />
+                <label className="form-label small fw-medium">Address</label>
+                <input className="form-control" defaultValue={customer?.address ?? "N/A"} />
               </div>
               <div className="col-12">
-                <button type="submit" className="btn btn-primary">Save Changes</button>
+                <button type="submit" className="btn btn-primary">Update Profile</button>
               </div>
             </form>
           </div>
         </div>
 
-        <div className="col-12 col-lg-5">
+        <div className="col-12 col-lg-4">
+          <div className="card border-0 shadow-sm p-4 mb-3">
+            <h2 className="h6 fw-semibold d-flex align-items-center gap-2 mb-3">
+              <KeyRound size={18} className="text-primary" /> Change Password
+            </h2>
+            {savedPassword && <div className="alert alert-success p-2 px-3 small mb-3">Password updated.</div>}
+            <form onSubmit={savePassword} className="d-flex flex-column gap-3">
+              <div>
+                <label className="form-label small fw-medium">Current Password</label>
+                <input className="form-control" type="password" placeholder="********" />
+              </div>
+              <div>
+                <label className="form-label small fw-medium">New Password</label>
+                <input className="form-control" type="password" placeholder="********" />
+              </div>
+              <button type="submit" className="btn btn-outline-primary w-100">Update Password</button>
+            </form>
+          </div>
+
           <div className="card border-0 shadow-sm p-4">
-            <h2 className="h6 fw-semibold mb-3">Preferences</h2>
-            <div className="d-flex flex-column gap-3">
-              <Toggle id="t1" label="Email notifications" hint="Receive claim and payment alerts" defaultChecked />
-              <Toggle id="t2" label="Auto-approve small claims" hint="Claims under Rs. 10,000" />
-              <Toggle id="t3" label="Weekly revenue report" hint="Every Monday morning" defaultChecked />
-              <Toggle id="t4" label="Two-factor authentication" hint="Extra security on login" />
-            </div>
+            <p className="text-muted small mb-3">Sign out of your account on this device.</p>
+            <button className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2" onClick={handleLogout}>
+              <LogOut size={16} /> Logout
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-function Toggle({ id, label, hint, defaultChecked }) {
-  return (
-    <div className="d-flex align-items-center justify-content-between">
-      <div>
-        <label htmlFor={id} className="fw-medium small mb-0">{label}</label>
-        <p className="text-muted mb-0" style={{ fontSize: "0.75rem" }}>{hint}</p>
-      </div>
-      <div className="form-check form-switch">
-        <input className="form-check-input" type="checkbox" id={id} defaultChecked={defaultChecked} role="switch" />
       </div>
     </div>
   )
