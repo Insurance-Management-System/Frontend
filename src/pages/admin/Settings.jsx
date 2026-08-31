@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom"
 import { User, KeyRound, LogOut } from "lucide-react"
 import { PageHeader } from "../../components/PageHeader.jsx"
 import { Avatar } from "../../components/Avatar.jsx"
-import { KycModal } from "../../components/KycModal.jsx"
 import { useAuth } from "../../lib/auth-context.jsx"
 import { useData } from "../../lib/data-context.jsx"
 
 export default function CustomerProfile() {
-  const { user, logout, updateUser, changePassword } = useAuth()
-  const { getCustomer, updateCustomer } = useData()
+  const { user, logout, changePassword } = useAuth()
+  const { getCustomer } = useData()
   const navigate = useNavigate()
   const [savedProfile, setSavedProfile] = useState(false)
   const [savedPassword, setSavedPassword] = useState(false)
@@ -17,20 +16,9 @@ export default function CustomerProfile() {
   const [changingPassword, setChangingPassword] = useState(false)
 
   const customer = getCustomer(user.id)
-  const addressValue =
-    customer?.address?.replaceAll("Profile pending", "").replace(/^,\s*|,\s*$/g, "").trim() ?? ""
 
-  async function saveProfile(e) {
+  function saveProfile(e) {
     e.preventDefault()
-    const fd = new FormData(e.currentTarget)
-    const body = {
-      name: String(fd.get("name")),
-      email: String(fd.get("email")),
-      phone: String(fd.get("phone")),
-      address: String(fd.get("address")),
-    }
-    await updateCustomer(user.id, body)
-    await updateUser(user.id, body)
     setSavedProfile(true)
     setTimeout(() => setSavedProfile(false), 2500)
   }
@@ -60,8 +48,8 @@ export default function CustomerProfile() {
     }
   }
 
-  async function handleLogout() {
-    await logout()
+  function handleLogout() {
+    logout()
     navigate("/", { replace: true })
   }
 
@@ -86,19 +74,19 @@ export default function CustomerProfile() {
             <form onSubmit={saveProfile} className="row g-3">
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Full Name</label>
-                <input name="name" className="form-control" defaultValue={customer?.name ?? user.name} />
+                <input className="form-control" defaultValue={user.name} />
               </div>
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Email</label>
-                <input name="email" className="form-control" type="email" defaultValue={customer?.email ?? user.email} />
+                <input className="form-control" type="email" defaultValue={user.email} />
               </div>
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Phone</label>
-                <input name="phone" className="form-control" defaultValue={customer?.phone ?? user.phone ?? ""} />
+                <input className="form-control" defaultValue={customer?.phone ?? "+91 90000 00000"} />
               </div>
               <div className="col-md-6">
                 <label className="form-label small fw-medium">Address</label>
-                <input name="address" className="form-control" defaultValue={addressValue} />
+                <input className="form-control" defaultValue={customer?.address ?? "N/A"} />
               </div>
               <div className="col-12">
                 <button type="submit" className="btn btn-primary">Update Profile</button>
@@ -139,9 +127,6 @@ export default function CustomerProfile() {
               <LogOut size={16} /> Logout
             </button>
           </div>
-        </div>
-        <div className="col-12" id="kyc">
-          <KycModal />
         </div>
       </div>
     </div>
